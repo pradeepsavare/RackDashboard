@@ -10,13 +10,13 @@ const devices = [
 
 function Header() {
   return (
-    <header className="h-14 bg-white border-b border-emerald-200 shadow-sm px-6 flex items-center justify-between relative">
+    <header className="h-13 bg-white border-b border-emerald-200 shadow-sm px-6 flex items-center justify-between relative">
       {/* Logo */}
       <div className="flex items-center w-1/4">
         <img
-          src="BMS-LOGO.png"
+          src="hindalco_logo.png"
           alt="Logo"
-          className="h-10 w-auto object-contain"
+          className="h-10 w-20 object-fill "
         />
       </div>
 
@@ -31,7 +31,7 @@ function Header() {
       {/* Right Side */}
       <div className="flex items-center gap-3 w-1/4 justify-end">
         {/* Rack Selector */}
-        <div className="flex items-center gap-2 px-3 py-1.5 bg-emerald-50 border border-emerald-200 rounded-xl">
+        {/* <div className="flex items-center gap-2 px-3 py-1.5 bg-emerald-50 border border-emerald-200 rounded-xl">
           <DesktopOutlined className="text-emerald-600" />
 
           <Select
@@ -41,13 +41,13 @@ function Header() {
             options={devices}
             style={{ width: 90 }}
           />
-        </div>
+        </div> */}
         {/* New Image */}
-        <div className="bg-emerald-600 rounded-xl px-3 py-1 shadow-sm">
+        <div className=" rounded-xl px-3  shadow-sm">
           <img
-            src="IESG White.png"
+            src="hexmesh_logo.png"
             alt="IESG Logo"
-            className="h-8 w-auto object-contain"
+            className="h-10 w-auto object-contain"
           />
         </div>
       </div>

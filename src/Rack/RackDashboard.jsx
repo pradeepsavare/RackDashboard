@@ -17,10 +17,36 @@ import {
   MdWarning,
 } from "react-icons/md";
 import { GiRat } from "react-icons/gi";
+import { useOutletContext } from "react-router-dom";
 
 function RackDashboard() {
-  // const { data, itemsLoading, devices } = useOutletContext();
-  // console.log(data);
+  //  const {
+  //   data,
+  //   itemsLoading,
+  //   isError,
+  //   selectedRack,
+  // } = useOutletContext();
+
+  //   console.log(data);
+  //   console.log(selectedRack);
+  //   console.log(isError);
+
+  // if (itemsLoading) {
+  //   return (
+  //     <div className="h-full flex items-center justify-center">
+  //       <Spin  />
+  //     </div>
+  //   );
+  // }
+
+  // if (isError) {
+  //   return (
+  //     <div className="h-full flex items-center justify-center text-red-500">
+  //       Failed to load rack details
+  //     </div>
+  //   );
+  // }
+
   const data = {
     rack_data: {
       value: [
@@ -280,10 +306,12 @@ function RackDashboard() {
       name: "Rack Data",
       unit: "",
     },
-    last_communication_time: null,
+    last_communication_time: "2026-06-01T00:00:00+05:30",
   };
 
   const rackData = data?.rack_data?.value || [];
+
+  // const rackData = data || [];
 
   const findValue = (keyword) => {
     const item = rackData.find((d) =>
@@ -298,18 +326,6 @@ function RackDashboard() {
     );
     return item ? item.zone_friendly_name : keyword;
   };
-
-  // if (itemsLoading) {
-  //   return (
-  //     <div className="h-full w-full flex justify-center items-center">
-  //       <Spin />
-  //     </div>
-  //   );
-  // }
-
-  // if (!rackData || rackData.length === 0) {
-  //   return <ToBeCreated title="Rack Dashboard" />;
-  // }
 
   return (
     <div className="h-full flex flex-col min-h-0">
@@ -454,7 +470,9 @@ function RackDashboard() {
             {/* Security */}
             <div className="flex items-center gap-2 shrink-0">
               <MdSecurity className="text-rose-500 text-2xl" />
-              <div className="text-lg font-semibold tracking-tight">Security</div>
+              <div className="text-lg font-semibold tracking-tight">
+                Security
+              </div>
             </div>
             <div className="grid grid-cols-3 gap-1 mb-2 ">
               <SecurityItem
@@ -477,7 +495,9 @@ function RackDashboard() {
             {/* UPS Status */}
             <div className="flex items-center gap-2 shrink-0">
               <MdOutlineBatteryChargingFull className="text-emerald-500 text-2xl" />
-              <div className="text-lg font-semibold tracking-tight">UPS Status</div>
+              <div className="text-lg font-semibold tracking-tight">
+                UPS Status
+              </div>
             </div>
             <div className="grid grid-cols-3 gap-1  text-center ">
               <div className="bg-white p-3 rounded-xl border border-gray-200 flex flex-col justify-center">
@@ -656,39 +676,57 @@ const PowerSourceItem = ({ label, value }) => (
   </div>
 );
 
-const SecurityItem = ({ icon, label, value }) => (
-  <div className="bg-white p-1.5 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-between items-center h-full">
-    {icon && (
-      <div
-        className={`text-2xl mb-1 ${value === 1 ? "text-red-500" : "text-emerald-500"}`}
-      >
-        {icon}
-      </div>
-    )}
-    <div className="text-sm font-semibold text-gray-600 uppercase tracking-widest mb-1 text-center">
-      {label}
-    </div>
+const SecurityItem = ({ icon, label, value }) => {
+  const isAlarm = value === 1;
+  const isDisabled = value == null || value === 0;
+
+  return (
     <div
-      className={`px-2 py-0.5 text-sm font-semibold rounded uppercase text-center flex items-center justify-center gap-1 ${
-        value == null
-          ? "bg-gray-300 text-gray-600"
-          : value === 1
-            ? "bg-red-500 text-white animate-[blink_1s_step-end_infinite]"
-            : "bg-emerald-500 text-white"
+      className={`p-1.5 rounded-xl border shadow-sm flex flex-col justify-between items-center h-full transition-all ${
+        isAlarm ? "bg-red-50 border-red-200" : "bg-gray-100 border-gray-200"
       }`}
     >
-      {value == null ? (
-        "-"
-      ) : value === 1 ? (
-        <>
-          <MdWarning className="text-base" /> ALARM
-        </>
-      ) : (
-        "NORMAL"
+      {icon && (
+        <div
+          className={`text-2xl mb-1 ${
+            isAlarm ? "text-red-500" : "text-gray-400"
+          }`}
+        >
+          {icon}
+        </div>
       )}
+
+      <div
+        className={`text-sm font-semibold uppercase tracking-widest mb-1 text-center ${
+          isAlarm ? "text-red-700" : "text-gray-400"
+        }`}
+      >
+        {label}
+      </div>
+
+      <div
+        className={`px-2 py-0.5 text-sm font-semibold rounded uppercase text-center flex items-center justify-center gap-1 ${
+          value == null
+            ? "bg-gray-300 text-gray-600"
+            : isAlarm
+              ? "bg-red-500 text-white animate-[blink_1s_step-end_infinite]"
+              : "bg-gray-400 text-white"
+        }`}
+      >
+        {value == null ? (
+          "-"
+        ) : isAlarm ? (
+          <>
+            <MdWarning className="text-base" />
+            ALARM
+          </>
+        ) : (
+          "NORMAL"
+        )}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 const EnvSection = ({
   title,
@@ -715,15 +753,14 @@ const EnvSection = ({
           <span className="text-sm font-semibold text-gray-600 ml-0.5">°C</span>
         </div>
       </div>
-      <div className="bg-white p-2 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-center items-center">
-        <MdWaterDrop className="text-2xl text-sky-500 mb-1" />
-        <div className="text-xs font-semibold text-gray-600 uppercase mb-1 tracking-wide text-center">
+      <div className="bg-gray-100 p-2 rounded-xl border border-gray-200 flex flex-col justify-center items-center opacity-60 pointer-events-none">
+        <MdWaterDrop className="text-2xl text-gray-400 mb-1" />
+
+        <div className="text-xs font-semibold text-gray-400 uppercase mb-1 tracking-wide text-center">
           {humidityLabel}
         </div>
-        <div className="text-xl font-semibold">
-          {humidity}
-          <span className="text-sm font-semibold text-gray-600 ml-0.5">%</span>
-        </div>
+
+        <div className="text-xl font-semibold text-gray-400">-</div>
       </div>
     </div>
   </div>
@@ -788,22 +825,42 @@ const ElectricalCard = ({
   </div>
 );
 
-const ClimateCard = ({ icon, label, value }) => (
-  <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col items-center justify-between h-full">
+const ClimateCard = ({ icon, label, value }) => {
+  const isOn = value === 1;
+  const isDisabled = value == null || value === 0;
+
+  return (
     <div
-      className={`text-3xl ${value == null ? "text-gray-400" : value === 1 ? "text-emerald-500" : "text-red-500"}`}
+      className={`p-4 rounded-xl border shadow-sm flex flex-col items-center justify-between h-full transition-all
+        ${
+          isDisabled
+            ? "bg-gray-100 border-gray-200"
+            : "bg-white border-emerald-100"
+        }`}
     >
-      {icon}
+      <div
+        className={`text-3xl ${isOn ? "text-emerald-500" : "text-gray-400"}`}
+      >
+        {icon}
+      </div>
+
+      <div
+        className={`text-sm font-semibold uppercase tracking-widest text-center ${
+          isOn ? "text-gray-600" : "text-gray-400"
+        }`}
+      >
+        {label}
+      </div>
+
+      <div
+        className={`px-4 py-1 text-sm font-semibold tracking-[0.1em] rounded-full uppercase text-center ${
+          isOn ? "bg-emerald-500 text-white" : "bg-gray-300 text-gray-600"
+        }`}
+      >
+        {value == null ? "-" : isOn ? "ON" : "OFF"}
+      </div>
     </div>
-    <div className="text-sm font-semibold text-gray-600 uppercase tracking-widest text-center">
-      {label}
-    </div>
-    <div
-      className={`px-4 py-1 text-sm font-semibold tracking-[0.1em] rounded-full uppercase text-center ${value == null ? "bg-gray-300 text-gray-600" : value === 1 ? "bg-emerald-500 text-white" : "bg-red-500 text-white"}`}
-    >
-      {value == null ? "-" : value === 1 ? "ON" : "OFF"}
-    </div>
-  </div>
-);
+  );
+};
 
 export default RackDashboard;
