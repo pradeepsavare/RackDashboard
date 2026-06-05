@@ -20,311 +20,55 @@ import { GiRat } from "react-icons/gi";
 import { useOutletContext } from "react-router-dom";
 
 function RackDashboard() {
-  //  const {
-  //   data,
-  //   itemsLoading,
-  //   isError,
-  //   selectedRack,
-  // } = useOutletContext();
+   const {
+    data,
+    itemsLoading,
+    isError,
+    selectedRack,
+  } = useOutletContext();
 
-  //   console.log(data);
-  //   console.log(selectedRack);
-  //   console.log(isError);
 
-  // if (itemsLoading) {
-  //   return (
-  //     <div className="h-full flex items-center justify-center">
-  //       <Spin  />
-  //     </div>
-  //   );
-  // }
+  if (itemsLoading) {
+    return (
+      <div className="h-full flex items-center justify-center">
+        <Spin  />
+      </div>
+    );
+  }
 
-  // if (isError) {
-  //   return (
-  //     <div className="h-full flex items-center justify-center text-red-500">
-  //       Failed to load rack details
-  //     </div>
-  //   );
-  // }
+  if (isError) {
+    return (
+      <div className="h-full flex items-center justify-center text-red-500">
+        Failed to load rack details
+      </div>
+    );
+  }
 
-  const data = {
-    rack_data: {
-      value: [
-        {
-          panel_no: "iam-office-testing-10129223",
-          device_code: "MOD21",
-          zone_id: 186017,
-          zone_name: "485 Based Board Input-1",
-          device_template_name: "Office Made 16 Io-Board",
-          zone_friendly_name: "Power Source A",
-          device_tag_name: "Rack",
-          device_tag_code: "RACK",
-          value: 1,
-          last_updated_time: null,
-        },
-        {
-          panel_no: "iam-office-testing-10129223",
-          device_code: "MOD21",
-          zone_id: 186018,
-          zone_name: "485 Based Board Input-2",
-          device_template_name: "Office Made 16 Io-Board",
-          zone_friendly_name: "Power Source B",
-          device_tag_name: "Rack",
-          device_tag_code: "RACK",
-          value: 0,
-          last_updated_time: null,
-        },
-        {
-          panel_no: "iam-office-testing-10129223",
-          device_code: "MOD21",
-          zone_id: 186019,
-          zone_name: "485 Based Board Input-3",
-          device_template_name: "Office Made 16 Io-Board",
-          zone_friendly_name: "Front Door Status",
-          device_tag_name: "Rack",
-          device_tag_code: "RACK",
-          value: 1,
-          last_updated_time: null,
-        },
-        {
-          panel_no: "iam-office-testing-10129223",
-          device_code: "MOD21",
-          zone_id: 186020,
-          zone_name: "485 Based Board Input-4",
-          device_template_name: "Office Made 16 Io-Board",
-          zone_friendly_name: "Rear Door Status",
-          device_tag_name: "Rack",
-          device_tag_code: "RACK",
-          value: 0,
-          last_updated_time: null,
-        },
-        {
-          panel_no: "iam-office-testing-10129223",
-          device_code: "MOD21",
-          zone_id: 186021,
-          zone_name: "485 Based Board Input-5",
-          device_template_name: "Office Made 16 Io-Board",
-          zone_friendly_name: "Front Temperature",
-          device_tag_name: "Rack",
-          device_tag_code: "RACK",
-          value: 25,
-          last_updated_time: null,
-        },
-        {
-          panel_no: "iam-office-testing-10129223",
-          device_code: "MOD21",
-          zone_id: 186022,
-          zone_name: "485 Based Board Input-6",
-          device_template_name: "Office Made 16 Io-Board",
-          zone_friendly_name: "Rear Temperature",
-          device_tag_name: "Rack",
-          device_tag_code: "RACK",
-          value: 24,
-          last_updated_time: null,
-        },
-        {
-          panel_no: "iam-office-testing-10129223",
-          device_code: "MOD21",
-          zone_id: 186023,
-          zone_name: "485 Based Board Input-7",
-          device_template_name: "Office Made 16 Io-Board",
-          zone_friendly_name: "Front Humidity",
-          device_tag_name: "Rack",
-          device_tag_code: "RACK",
-          value: 57,
-          last_updated_time: null,
-        },
-        {
-          panel_no: "iam-office-testing-10129223",
-          device_code: "MOD21",
-          zone_id: 186024,
-          zone_name: "485 Based Board Input-8",
-          device_template_name: "Office Made 16 Io-Board",
-          zone_friendly_name: "Rear Humidity",
-          device_tag_name: "Rack",
-          device_tag_code: "RACK",
-          value: 56,
-          last_updated_time: null,
-        },
-        {
-          panel_no: "iam-office-testing-10129223",
-          device_code: "MOD21",
-          zone_id: 186025,
-          zone_name: "485 Based Board Input-9",
-          device_template_name: "Office Made 16 Io-Board",
-          zone_friendly_name: "Power A Voltage",
-          device_tag_name: "Rack",
-          device_tag_code: "RACK",
-          value: 240,
-          last_updated_time: null,
-        },
-        {
-          panel_no: "iam-office-testing-10129223",
-          device_code: "MOD21",
-          zone_id: 186026,
-          zone_name: "485 Based Board Input-10",
-          device_template_name: "Office Made 16 Io-Board",
-          zone_friendly_name: "Power A Current",
-          device_tag_name: "Rack",
-          device_tag_code: "RACK",
-          value: 15,
-          last_updated_time: null,
-        },
-        {
-          panel_no: "iam-office-testing-10129223",
-          device_code: "MOD21",
-          zone_id: 186027,
-          zone_name: "485 Based Board Input-11",
-          device_template_name: "Office Made 16 Io-Board",
-          zone_friendly_name: "Power B Voltage",
-          device_tag_name: "Rack",
-          device_tag_code: "RACK",
-          value: 230,
-          last_updated_time: null,
-        },
-        {
-          panel_no: "iam-office-testing-10129223",
-          device_code: "MOD21",
-          zone_id: 186028,
-          zone_name: "485 Based Board Input-13",
-          device_template_name: "Office Made 16 Io-Board",
-          zone_friendly_name: "Power B Current",
-          device_tag_name: "Rack",
-          device_tag_code: "RACK",
-          value: 14,
-          last_updated_time: null,
-        },
-        {
-          panel_no: "iam-office-testing-10129223",
-          device_code: "MOD22",
-          zone_id: 186029,
-          zone_name: "485 Based Board Input-14",
-          device_template_name: "Office Made 16 Io-Board",
-          zone_friendly_name: "UPS Output Load",
-          device_tag_name: "Rack",
-          device_tag_code: "RACK",
-          value: 74,
-          last_updated_time: null,
-        },
-        {
-          panel_no: "iam-office-testing-10129223",
-          device_code: "MOD22",
-          zone_id: 186030,
-          zone_name: "485 Based Board Input-14",
-          device_template_name: "Office Made 16 Io-Board",
-          zone_friendly_name: "UPS Battery Health",
-          device_tag_name: "Rack",
-          device_tag_code: "RACK",
-          value: 0,
-          last_updated_time: null,
-        },
-        {
-          panel_no: "iam-office-testing-10129223",
-          device_code: "MOD22",
-          zone_id: 186031,
-          zone_name: "485 Based Board Input-14",
-          device_template_name: "Office Made 16 Io-Board",
-          zone_friendly_name: "UPS Battery Remaining Time",
-          device_tag_name: "Rack",
-          device_tag_code: "RACK",
-          value: 120,
-          last_updated_time: null,
-        },
-        {
-          panel_no: "iam-office-testing-10129223",
-          device_code: "MOD23",
-          zone_id: 186032,
-          zone_name: "485 Based Board Input-14",
-          device_template_name: "Office Made 16 Io-Board",
-          zone_friendly_name: "Fire Alarm Status",
-          device_tag_name: "Rack",
-          device_tag_code: "RACK",
-          value: null,
-          last_updated_time: null,
-        },
-        {
-          panel_no: "iam-office-testing-10129223",
-          device_code: "MOD24",
-          zone_id: 186033,
-          zone_name: "485 Based Board Input-14",
-          device_template_name: "Office Made 16 Io-Board",
-          zone_friendly_name: "Rodant Detection Status",
-          device_tag_name: "Rack",
-          device_tag_code: "RACK",
-          value: null,
-          last_updated_time: null,
-        },
-        {
-          panel_no: "iam-office-testing-10129223",
-          device_code: "MOD25",
-          zone_id: 186034,
-          zone_name: "485 Based Board Input-14",
-          device_template_name: "Office Made 16 Io-Board",
-          zone_friendly_name: "Cooling Panel Status",
-          device_tag_name: "Rack",
-          device_tag_code: "RACK",
-          value: null,
-          last_updated_time: null,
-        },
-        {
-          panel_no: "iam-office-testing-10129223",
-          device_code: "MOD25",
-          zone_id: 186035,
-          zone_name: "485 Based Board Input-15",
-          device_template_name: "Office Made 16 Io-Board",
-          zone_friendly_name: "Evaporator Status",
-          device_tag_name: "Rack",
-          device_tag_code: "RACK",
-          value: null,
-          last_updated_time: null,
-        },
-        {
-          panel_no: "iam-office-testing-10129223",
-          device_code: "MOD25",
-          zone_id: 186036,
-          zone_name: "485 Based Board Input-16",
-          device_template_name: "Office Made 16 Io-Board",
-          zone_friendly_name: "Compressor Status",
-          device_tag_name: "Rack",
-          device_tag_code: "RACK",
-          value: null,
-          last_updated_time: null,
-        },
-        {
-          panel_no: "iam-office-testing-10129223",
-          device_code: "MOD26",
-          zone_id: 186037,
-          zone_name: "485 Based Board Input-1",
-          device_template_name: "Office Made 16 Io-Board",
-          zone_friendly_name: "Water Leak Detection Status",
-          device_tag_name: "Rack",
-          device_tag_code: "RACK",
-          value: null,
-          last_updated_time: null,
-        },
-      ],
-      name: "Rack Data",
-      unit: "",
-    },
-    last_communication_time: "2026-06-01T00:00:00+05:30",
-  };
+  
 
-  const rackData = data?.rack_data?.value || [];
 
-  // const rackData = data || [];
+  // ensure `data` is an array before mapping — guard against API returning an object
+  const sourceArray = Array.isArray(data) ? data : Array.isArray(data?.data) ? data.data : [];
+
+  const rackData = sourceArray.map((d) => ({
+    ...d,
+    // use device_name as the friendly name for mapping
+    zone_friendly_name: d.device_name || null,
+  }));
 
   const findValue = (keyword) => {
     const item = rackData.find((d) =>
-      d.zone_friendly_name?.toLowerCase().includes(keyword.toLowerCase()),
+      d.device_name?.toLowerCase().includes(keyword.toLowerCase()),
     );
-    return item ? item.value : "-";
+    // return null when missing so UI treats it as disabled
+    return item ? item.value : null;
   };
 
   const findName = (keyword) => {
     const item = rackData.find((d) =>
-      d.zone_friendly_name?.toLowerCase().includes(keyword.toLowerCase()),
+      d.device_name?.toLowerCase().includes(keyword.toLowerCase()),
     );
-    return item ? item.zone_friendly_name : keyword;
+    return item ? item.device_name : keyword;
   };
 
   return (
@@ -364,13 +108,13 @@ function RackDashboard() {
               </div>
             </div>
             <div className="flex flex-col gap-1 flex-1 min-h-0">
-              <div className="flex-1 flex flex-col">
+              <div className={`flex-1 flex flex-col ${findValue("Power Source A") == null ? 'bg-gray-100 rounded-lg p-1' : ''}`}>
                 <PowerSourceItem
                   label={findName("Power Source A")}
                   value={findValue("Power Source A")}
                 />
               </div>
-              <div className="flex-1 flex flex-col">
+              <div className={`flex-1 flex flex-col ${findValue("Power Source B") == null ? 'bg-gray-100 rounded-lg p-1' : ''}`}>
                 <PowerSourceItem
                   label={findName("Power Source B")}
                   value={findValue("Power Source B")}
@@ -390,7 +134,7 @@ function RackDashboard() {
 
             <div className="grid grid-cols-2 gap-1 flex-1 min-h-0">
               {/* Front Door */}
-              <div className="bg-white px-2 py-1 rounded-lg border border-gray-100 shadow-sm flex flex-col justify-center">
+              <div className={`px-2 py-1 rounded-lg border shadow-sm flex flex-col justify-center ${findValue("Front Door") == null ? 'bg-gray-100 border-gray-200' : 'bg-white border-gray-100'}`}>
                 <div className="text-[10px] font-semibold text-gray-600 uppercase tracking-wide truncate">
                   {findName("Front Door")}
                 </div>
@@ -427,7 +171,7 @@ function RackDashboard() {
               </div>
 
               {/* Rear Door */}
-              <div className="bg-white px-2 py-1 rounded-lg border border-gray-100 shadow-sm flex flex-col justify-center">
+              <div className={`px-2 py-1 rounded-lg border shadow-sm flex flex-col justify-center ${findValue("Rear Door") == null ? 'bg-gray-100 border-gray-200' : 'bg-white border-gray-100'}`}>
                 <div className="text-[10px] font-semibold text-gray-600 uppercase tracking-wide truncate">
                   {findName("Rear Door")}
                 </div>
@@ -500,28 +244,28 @@ function RackDashboard() {
               </div>
             </div>
             <div className="grid grid-cols-3 gap-1  text-center ">
-              <div className="bg-white p-3 rounded-xl border border-gray-200 flex flex-col justify-center">
+              <div className={`p-3 rounded-xl border flex flex-col justify-center ${findValue("UPS Output Load") == null ? 'bg-gray-100 border-gray-200 text-gray-400' : 'bg-white border-gray-200'}`}>
                 <div className="text-sm font-semibold text-gray-600 uppercase leading-none">
                   UPS Load
                 </div>
-                <div className="text-2xl font-semibold leading-tight mt-2">
-                  {findValue("UPS Output Load")}%
+                <div className={`text-2xl font-semibold leading-tight mt-2 ${findValue("UPS Output Load") == null ? 'text-gray-400' : ''}`}>
+                  {findValue("UPS Output Load") == null ? '-' : `${findValue("UPS Output Load")}%`}
                 </div>
               </div>
-              <div className="bg-white p-3 rounded-xl border border-gray-200 flex flex-col justify-center">
+              <div className={`p-3 rounded-xl border flex flex-col justify-center ${findValue("UPS Battery Health") == null ? 'bg-gray-100 border-gray-200 text-gray-400' : 'bg-white border-gray-200'}`}>
                 <div className="text-sm font-semibold text-gray-600 uppercase leading-none">
                   UPS Health
                 </div>
-                <div className="text-2xl font-semibold text-emerald-500 leading-tight mt-2">
-                  {findValue("UPS Battery Health")}%
+                <div className={`text-2xl font-semibold leading-tight mt-2 ${findValue("UPS Battery Health") == null ? 'text-gray-400' : 'text-emerald-500'}`}>
+                  {findValue("UPS Battery Health") == null ? '-' : `${findValue("UPS Battery Health")}%`}
                 </div>
               </div>
-              <div className="bg-white p-3 rounded-xl border border-gray-200 flex flex-col justify-center">
+              <div className={`p-3 rounded-xl border flex flex-col justify-center ${findValue("Remaining Time") == null ? 'bg-gray-100 border-gray-200 text-gray-400' : 'bg-white border-gray-200'}`}>
                 <div className="text-sm font-semibold text-gray-600 uppercase leading-none">
                   UPS Runtime
                 </div>
-                <div className="text-2xl font-semibold leading-tight mt-2">
-                  {findValue("Remaining Time")}m
+                <div className={`text-2xl font-semibold leading-tight mt-2 ${findValue("Remaining Time") == null ? 'text-gray-400' : ''}`}>
+                  {findValue("Remaining Time") == null ? '-' : `${findValue("Remaining Time")}m`}
                 </div>
               </div>
             </div>
@@ -637,7 +381,7 @@ function RackDashboard() {
 }
 
 const PowerSourceItem = ({ label, value }) => (
-  <div className="flex items-center justify-between px-2 py-1.5 bg-white rounded-lg border border-gray-200 shadow-sm h-full">
+  <div className={`flex items-center justify-between px-2 py-1.5 rounded-lg border shadow-sm h-full ${value == null ? 'bg-gray-100 border-gray-200 text-gray-400' : 'bg-white border-gray-200'}`}>
     <div className="flex items-center gap-2 min-w-0">
       <div
         className={`w-8 h-8 rounded-full flex items-center justify-center ${
@@ -743,24 +487,24 @@ const EnvSection = ({
       {title}
     </div>
     <div className="flex-1 grid grid-cols-2 gap-1.5 ">
-      <div className="bg-white p-2 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-center items-center">
-        <MdThermostat className="text-xl text-amber-500 mb-1" />
-        <div className="text-sm font-semibold text-gray-600 uppercase mb-1 tracking-wide text-center">
+      <div className={`p-2 rounded-xl border shadow-sm flex flex-col justify-center items-center ${temp == null ? 'bg-gray-100 border-gray-200 text-gray-400' : 'bg-white border-gray-100'}`}>
+        <MdThermostat className={`text-xl mb-1 ${temp == null ? 'text-gray-400' : 'text-amber-500'}`} />
+        <div className={`text-sm font-semibold uppercase mb-1 tracking-wide text-center ${temp == null ? 'text-gray-400' : 'text-gray-600'}`}>
           {tempLabel}
         </div>
-        <div className="text-xl font-semibold">
-          {temp}
+        <div className={`text-xl font-semibold ${temp == null ? 'text-gray-400' : ''}`}>
+          {temp == null ? '-' : temp}
           <span className="text-sm font-semibold text-gray-600 ml-0.5">°C</span>
         </div>
       </div>
-      <div className="bg-gray-100 p-2 rounded-xl border border-gray-200 flex flex-col justify-center items-center opacity-60 pointer-events-none">
-        <MdWaterDrop className="text-2xl text-gray-400 mb-1" />
+      <div className={`p-2 rounded-xl border shadow-sm flex flex-col justify-center items-center ${humidity == null ? 'bg-gray-100 border-gray-200 text-gray-400' : 'bg-white border-gray-100'}`}>
+        <MdWaterDrop className={`text-2xl mb-1 ${humidity == null ? 'text-gray-400' : 'text-sky-500'}`} />
 
-        <div className="text-xs font-semibold text-gray-400 uppercase mb-1 tracking-wide text-center">
+        <div className={`text-xs font-semibold uppercase mb-1 tracking-wide text-center ${humidity == null ? 'text-gray-400' : 'text-gray-400'}`}>
           {humidityLabel}
         </div>
 
-        <div className="text-xl font-semibold text-gray-400">-</div>
+        <div className={`text-xl font-semibold ${humidity == null ? 'text-gray-400' : ''}`}>{humidity == null ? '-' : humidity}</div>
       </div>
     </div>
   </div>
@@ -776,7 +520,12 @@ const ElectricalCard = ({
   a,
   kwh,
 }) => (
-  <div className="bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col overflow-hidden h-full">
+  // treat missing active as disabled for visuals and accessibility
+  <div
+    className={`bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col overflow-hidden h-full ${active == null ? 'opacity-60 pointer-events-none' : ''}`}
+    aria-disabled={active == null}
+    title={active == null ? 'Data unavailable' : undefined}
+  >
     <div
       className={`flex items-center justify-between px-3 py-1.5 border-b ${active == null ? "bg-gray-50 border-gray-200" : active === 1 ? "bg-emerald-50 border-emerald-200" : "bg-red-50 border-red-200"}`}
     >
@@ -790,32 +539,32 @@ const ElectricalCard = ({
       />
     </div>
     <div className="flex-1 grid grid-cols-3 divide-x divide-gray-200">
-      <div className="p-1.5 flex flex-col justify-center items-center">
+      <div className={`p-1.5 flex flex-col justify-center items-center ${v == null ? 'text-gray-400' : ''}`}>
         <div className="text-sm font-semibold text-gray-600 uppercase mb-1 tracking-wide text-center">
           {vLabel}
         </div>
         <div className="text-xl font-semibold tracking-tighter">
-          {v}
+          {v == null ? '-' : v}
           <span className="text-base font-semibold text-gray-600 ml-0.5">
             V
           </span>
         </div>
       </div>
-      <div className="p-1.5 flex flex-col justify-center items-center">
+      <div className={`p-1.5 flex flex-col justify-center items-center ${a == null ? 'text-gray-400' : ''}`}>
         <div className="text-sm font-semibold text-gray-600 uppercase mb-1 tracking-wide text-center">
           {aLabel}
         </div>
-        <div className="text-xl font-semibold text-sky-600 tracking-tighter">
-          {a}
+        <div className={`text-xl font-semibold ${a == null ? '' : 'text-sky-600'} tracking-tighter`}>
+          {a == null ? '-' : a}
           <span className="text-base font-semibold text-sky-400 ml-0.5">A</span>
         </div>
       </div>
-      <div className="p-1.5 flex flex-col justify-center items-center">
+      <div className={`p-1.5 flex flex-col justify-center items-center ${kwh == null ? 'text-gray-400' : ''}`}>
         <div className="text-sm font-semibold text-gray-600 uppercase mb-1 tracking-wide text-center">
           {kwhLabel}
         </div>
-        <div className="text-xl font-semibold text-amber-500 tracking-tighter">
-          {kwh}
+        <div className={`text-xl font-semibold ${kwh == null ? '' : 'text-amber-500'} tracking-tighter`}>
+          {kwh == null ? '-' : kwh}
           <span className="text-base font-semibold text-amber-400 ml-0.5">
             KW
           </span>
@@ -827,7 +576,8 @@ const ElectricalCard = ({
 
 const ClimateCard = ({ icon, label, value }) => {
   const isOn = value === 1;
-  const isDisabled = value == null || value === 0;
+  // only treat as disabled when value is missing from API
+  const isDisabled = value == null;
 
   return (
     <div
