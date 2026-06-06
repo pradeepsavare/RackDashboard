@@ -12,7 +12,7 @@ export default function useRackDetails(rackName) {
       const dd = String(today.getDate()).padStart(2, "0");
 
       const { data } = await axios.get(
-        "http://10.129.2.23:14001/get_rack_device_details",
+        "/get_rack_device_details",
         {
           params: {
             rack_name: rackName,
