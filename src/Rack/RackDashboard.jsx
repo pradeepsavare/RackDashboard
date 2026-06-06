@@ -69,10 +69,336 @@ function RackDashboard() {
   return (
     <div className="h-full flex flex-col min-h-0">
       <style>{`@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }`}</style>
-    
 
       {/* Main Content Grid */}
       <div className="flex flex-col lg:flex-row gap-2 flex-1 min-h-0 ">
+        {/* COLUMN 1: Image Preview */}
+        <div className="w-full lg:w-[25%] flex flex-col gap-2">
+          <div className="relative w-full h-full bg-gray-50 rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+            <img
+              src="/Rack.jpg"
+              alt="Rack"
+              className="w-full h-auto object-contain"
+            />
+
+            {/* Power Monitor Overlay */}
+            <div
+              className="absolute bg-[#0C0E12] text-white px-1.5 py-1"
+              style={{
+                top: "5.5%",
+                left: "15%",
+                width: "42%",
+                height: "13%",
+              }}
+            >
+              <div className="grid grid-cols-2 gap-1 h-full">
+                <div className="flex flex-col justify-center items-center leading-none">
+                  <div
+                    className="text-gray-300"
+                    style={{ fontSize: "clamp(7px, 0.45vw, 12px)" }}
+                  >
+                  {findName("Power A Current") || "Power A Load"}
+                  </div>
+
+                  <div
+                    className="font-semibold text-gray-300 md:text-base lg:text-xl"
+                    // style={{ fontSize: "clamp(16px, 0.7vw, 18px)" }}
+                  >
+                    {findValue("Power A Current") == null
+                      ? "-"
+                      : `${findValue("Power A Current")}A`}
+                  </div>
+
+                  <div
+                    className="text-gray-300 mt-2"
+                    style={{ fontSize: "clamp(7px, 0.45vw, 12px)" }}
+                  >
+                    {findName("Power A KW") || "Power A KW"}
+                  </div>
+
+                  <div
+                    className="font-semibold md:text-base lg:text-xl"
+                    // style={{ fontSize: "clamp(16px, 0.7vw, 18px)" }}
+                  >
+                    {findValue("Power A KW") == null
+                      ? "-"
+                      : `${findValue("Power A KW")}KW`}
+                  </div>
+                </div>
+
+                <div className="flex flex-col justify-center items-center leading-none">
+                  <div
+                    className="text-gray-300"
+                    style={{ fontSize: "clamp(7px, 0.45vw, 12px)" }}
+                  >
+                     {findName("Power B Current") || "Power B Load"}
+                  </div>
+
+                  <div
+                    className="font-semibold text-gray-300 md:text-base lg:text-xl"
+                    // style={{ fontSize: "clamp(16px, 0.7vw, 18px)" }}
+                  >
+                   {findValue("Power B Current") == null
+                      ? "-"
+                      : `${findValue("Power B Current")}A`}
+                  </div>
+
+                  <div
+                    className="text-gray-300 mt-2 "
+                    style={{ fontSize: "clamp(7px, 0.45vw, 12px)" }}
+                  >
+                    {findName("Power B KW") || "Power B KW"}
+                  </div>
+
+                  <div
+                    className="font-semibold md:text-base lg:text-xl "
+                    // style={{ fontSize: "clamp(16px, 0.7vw, 18px)" }}
+                  >
+                    {findValue("Power B KW") == null
+                      ? "-"
+                      : `${findValue("Power B KW")}KW`}
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* front and rear temperature */}
+            <div
+              className="absolute bg-[#0C0E12] text-white px-1.5 py-1"
+              style={{
+                top: "8%",
+                left: "74%",
+                width: "24%",
+                height: "14%",
+              }}
+            >
+              <div className="grid grid-cols-1 gap-1 h-full">
+                <div className="flex flex-col justify-center items-center leading-none">
+                  <div
+                    className="text-gray-300"
+                    style={{ fontSize: "clamp(7px, 0.45vw, 12px)" }}
+                  >
+                    {findName("Front Temperature")}
+                  </div>
+
+                  <div
+                    className="font-semibold text-gray-300 md:text-base lg:text-xl"
+                    // style={{ fontSize: "clamp(12px, 0.7vw, 14px)" }}
+                  >
+                    {findValue("Front Temperature") == null
+                      ? "-"
+                      : `${findValue("Front Temperature")}°C`}
+                  </div>
+
+                  <div
+                    className="text-gray-300 mt-2"
+                    style={{ fontSize: "clamp(7px, 0.45vw, 12px)" }}
+                  >
+                    {findName("Rear Temperature")}
+                  </div>
+
+                  <div
+                    className="font-semibold md:text-base lg:text-xl"
+                    // style={{ fontSize: "clamp(12px, 0.7vw, 14px)" }}
+                  >
+                    {findValue("Rear Temperature") == null
+                      ? "-"
+                      : `${findValue("Rear Temperature")}°C`}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* front door */}
+            <div
+              className="absolute bg-[#0C0E12] text-white px-1.5 py-1"
+              style={{
+                top: "22%",
+                left: "2%",
+                width: "10%",
+                height: "15%",
+              }}
+            >
+              <div className="grid grid-cols-1 gap-1 h-full">
+                <div className="flex flex-col justify-center items-center leading-none">
+                  <div
+                    className="text-gray-300 text-sm "
+                    // style={{ fontSize: "clamp(7px, 0.45vw, 12px)" }}
+                  >
+                    {findName("Front Door")}
+                  </div>
+
+                  <div
+                    className="font-semibold text-gray-300 md:text-base lg:text-xl"
+                    // style={{ fontSize: "clamp(12px, 0.7vw, 14px)" }}
+                  >
+                    {findValue("Front Door") == null
+                      ? "-"
+                      : `${findValue("Front Door")}`}
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+             {/* rear door */}
+            <div
+              className="absolute bg-[#0C0E12] text-white px-1.5 py-1"
+              style={{
+                top: "65%",
+                left: "2%",
+                width: "10%",
+                height: "15%",
+              }}
+            >
+              <div className="grid grid-cols-1 gap-1 h-full">
+                <div className="flex flex-col justify-center items-center leading-none">
+                  <div
+                    className="text-gray-300 text-sm "
+                    // style={{ fontSize: "clamp(7px, 0.45vw, 12px)" }}
+                  >
+                    {findName("Rear Door")}
+                  </div>
+
+                  <div
+                    className="font-semibold text-gray-300 md:text-base lg:text-xl"
+                    // style={{ fontSize: "clamp(12px, 0.7vw, 14px)" }}
+                  >
+                    {findValue("Rear Door") == null
+                      ? "-"
+                      : `${findValue("Rear Door")}`}
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+             {/* UPS Status */}
+            <div
+              className="absolute bg-[#0C0E12] text-white px-1.5 py-1"
+              style={{
+                 top: "73%",
+                left: "74%",
+                width: "24%",
+                height: "22%",
+              }}
+            >
+              <div className="grid grid-cols-1 gap-1 h-full">
+                <div className="flex flex-col justify-center items-center leading-none">
+                  <div
+                    className="text-gray-300"
+                    style={{ fontSize: "clamp(12px, 0.5vw, 14px)"}}
+                  >
+                    {findName("UPS Load")}
+                  </div>
+
+                  <div
+                    className="font-semibold text-gray-300 md:text-base lg:text-xl"
+                    // style={{ fontSize: "clamp(12px, 0.7vw, 14px)" }}
+                  >
+                    {findValue("UPS Output Load") == null
+                      ? "-"
+                      : `${findValue("UPS Output Load")}%`}
+                  </div>
+
+                  <div
+                    className="text-gray-300 mt-2"
+                    style={{ fontSize: "clamp(12px, 0.5vw, 14px)" }}
+                  >
+                    {findName("UPS Health")}
+                  </div>
+
+                  <div
+                    className="font-semibold md:text-base lg:text-xl"
+                    // style={{ fontSize: "clamp(12px, 0.7vw, 14px)" }}
+                  >
+                    {findValue("UPS Battery Health") == null
+                      ? "-"
+                      : `${findValue("UPS Battery Health")}%`}
+                  </div>
+                  <div
+                    className="text-gray-300 mt-2"
+                    style={{ fontSize: "clamp(12px, 0.5vw, 14px)" }}
+                  >
+                    {findName("UPS Runtime")}
+                  </div>
+
+                  <div
+                    className="font-semibold md:text-base lg:text-xl"
+                  // style={{ fontSize: "clamp(12px, 0.7vw, 14px)"}}
+                  >
+                    {findValue("Remaining Time") == null
+                      ? "-"
+                      : `${findValue("Remaining Time")}m`}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+              {/* cooling Status */}
+            <div
+              className="absolute bg-[#0C0E12] text-white px-1.5 py-1"
+              style={{
+                 top: "23%",
+                left: "74%",
+                width: "24%",
+                height: "25%",
+              }}
+            >
+              <div className="grid grid-cols-1 gap-1 h-full">
+                <div className="flex flex-col justify-center items-center  leading-none">
+                  <div
+                    className="text-gray-300"
+                    style={{ fontSize: "clamp(12px, 0.5vw, 14px)" }}
+                  >
+                    {findName("Cooling Panel")}
+                  </div>
+
+                  <div
+                    className="font-semibold text-gray-300 md:text-base lg:text-xl"
+                    // style={{ fontSize: "clamp(12px, 0.7vw, 14px)" }}
+                  >
+                    {findValue("Cooling Panel") == null
+                      ? "-"
+                      : `${findValue("Cooling Panel")}`}
+                  </div>
+
+                  <div
+                    className="text-gray-300 mt-2"
+                    style={{ fontSize: "clamp(12px, 0.5vw, 14px)" }}
+                  >
+                    {findName("Evaporator")}
+                  </div>
+
+                  <div
+                    className="font-semibold md:text-base lg:text-xl"
+                    // style={{ fontSize: "clamp(12px, 0.7vw, 14px)" }}
+                  >
+                    {findValue("Evaporator") == null
+                      ? "-"
+                      : `${findValue("Evaporator")}`}
+                  </div>
+                  <div
+                    className="text-gray-300 mt-2"
+                    style={{ fontSize: "clamp(12px, 0.5vw, 14px)" }}
+                  >
+                    {findName("Compressor")}
+                  </div>
+
+                  <div
+                    className="font-semibold md:text-base lg:text-xl"
+                    // style={{ fontSize: "clamp(12px, 0.7vw, 14px)" }}
+                  >
+                    {findValue("Compressor") == null
+                      ? "-"
+                      : `${findValue("Compressor")}`}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* COLUMN 2: Power & Security */}
         <div className="w-full lg:w-[28%] flex flex-col gap-2 ">
           {/* Card 1: Power Source */}
