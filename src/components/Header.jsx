@@ -10,13 +10,13 @@ const devices = [
 
 function Header() {
   return (
-    <header className="h-13 bg-white border-b border-emerald-200 shadow-sm px-6 flex items-center justify-between relative">
+    <header className="h-20 bg-white border-b border-emerald-200 shadow-sm px-6 flex items-center justify-between relative">
       {/* Logo */}
       <div className="flex items-center w-1/4">
         <img
-          src="hindalco_logo.png"
+          src="/hindalco_logo.png"
           alt="Logo"
-          className="h-10 w-20 object-fill "
+          className="h-14 w-20 object-fill "
         />
       </div>
 
@@ -45,9 +45,9 @@ function Header() {
         {/* New Image */}
         <div className=" rounded-xl px-3  shadow-sm">
           <img
-            src="hexmesh_logo.png"
+            src="/hexmesh_logo.png"
             alt="IESG Logo"
-            className="h-10 w-auto object-contain"
+            className="h-12 w-auto object-contain"
           />
         </div>
       </div>
