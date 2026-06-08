@@ -33,5 +33,7 @@ export default function useRackDetails(rackNames = []) {
     },
 
     enabled: rackNames.length > 0,
+    // Refetch every 1 minute
+    refetchInterval: rackNames.length > 0 ? 60 * 1000 : false,
   });
 }

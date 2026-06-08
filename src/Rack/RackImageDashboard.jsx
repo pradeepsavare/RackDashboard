@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useOutletContext, useSearchParams } from "react-router-dom";
 import useRackDetails from "../hooks/useRackDetails";
 import RackImage from "./RackImage";
@@ -15,6 +15,15 @@ function RackImageDashboard() {
     isLoading,
     isError,
   } = useRackDetails(selectedRacks);
+
+  // Reset selected rack whenever sidebar group changes
+  useEffect(() => {
+    setSelectedRackData(null);
+
+    const newParams = new URLSearchParams(searchParams);
+    newParams.delete("rack");
+    setSearchParams(newParams);
+  }, [selectedRacks]);
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Failed to load rack details</div>;
