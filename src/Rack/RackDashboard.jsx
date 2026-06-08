@@ -17,28 +17,9 @@ import {
   MdWarning,
 } from "react-icons/md";
 import { GiRat } from "react-icons/gi";
-import { useOutletContext } from "react-router-dom";
 
-function RackDashboard() {
-  const { data, itemsLoading, isError, selectedRack } = useOutletContext();
-
-  if (itemsLoading) {
-    return (
-      <div className="h-full flex items-center justify-center">
-        <Spin />
-      </div>
-    );
-  }
-
-  if (isError) {
-    return (
-      <div className="h-full flex items-center justify-center text-red-500">
-        Failed to load rack details
-      </div>
-    );
-  }
-
-  // ensure `data` is an array before mapping — guard against API returning an object
+function RackDashboard({ rackName, data, onBack }) {
+ 
   const sourceArray = Array.isArray(data)
     ? data
     : Array.isArray(data?.data)
@@ -66,10 +47,50 @@ function RackDashboard() {
     return item ? item.device_name : keyword;
   };
 
+  const lastUpdated = data?.data?.[0]?.time || data?.[0]?.time || "-";
+
+  const upsHealth = findValue("UPS Health Status");
+
+  const status =
+    upsHealth == null
+      ? "-"
+      : Number(upsHealth) === 0
+        ? "Shutdown"
+        : Number(upsHealth) <= 219
+          ? "Alarm"
+          : "Healthy";
+
+  const formattedTime =
+    lastUpdated !== "-"
+      ? new Date(lastUpdated).toLocaleString("en-IN", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+        })
+      : "-";
+
   return (
     <div className="h-full flex flex-col min-h-0">
       <style>{`@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }`}</style>
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center gap-2">
+          <button
+            onClick={onBack}
+            className="px-3 py-1 text-sm bg-[#0F678F] text-white rounded-lg hover:bg-[#0c5678]"
+          >
+            ← Back
+          </button>
 
+          <h2 className="text-lg font-semibold">{rackName}</h2>
+        </div>
+
+        <div className="text-sm text-gray-600 font-medium">
+          Last Updated: {formattedTime}
+        </div>
+      </div>
       {/* Main Content Grid */}
       <div className="flex flex-col lg:flex-row gap-2 flex-1 min-h-0 ">
         {/* COLUMN 1: Image Preview */}
@@ -85,10 +106,10 @@ function RackDashboard() {
             <div
               className="absolute bg-[#0C0E12] text-white px-1.5 py-1"
               style={{
-                top: "5.5%",
+                top: "6%",
                 left: "15%",
                 width: "42%",
-                height: "13%",
+                height: "14%",
               }}
             >
               <div className="grid grid-cols-2 gap-1 h-full">
@@ -97,16 +118,16 @@ function RackDashboard() {
                     className="text-gray-300"
                     style={{ fontSize: "clamp(7px, 0.45vw, 12px)" }}
                   >
-                  {findName("Power A Current") || "Power A Load"}
+                    {findName("Power A Current") || "Power A Load"}
                   </div>
 
                   <div
-                    className="font-semibold text-gray-300 md:text-base lg:text-xl"
+                    className="font-semibold text-gray-300 md:text-base lg:text-lg"
                     // style={{ fontSize: "clamp(16px, 0.7vw, 18px)" }}
                   >
                     {findValue("Power A Current") == null
                       ? "-"
-                      : `${findValue("Power A Current")}A`}
+                      : `${Number(findValue("Power A Current")).toFixed(2)}A`}
                   </div>
 
                   <div
@@ -117,12 +138,12 @@ function RackDashboard() {
                   </div>
 
                   <div
-                    className="font-semibold md:text-base lg:text-xl"
+                    className="font-semibold md:text-base lg:text-lg"
                     // style={{ fontSize: "clamp(16px, 0.7vw, 18px)" }}
                   >
                     {findValue("Power A KW") == null
                       ? "-"
-                      : `${findValue("Power A KW")}KW`}
+                      : `${Number(findValue("Power A KW")).toFixed(2)}KW`}
                   </div>
                 </div>
 
@@ -131,16 +152,16 @@ function RackDashboard() {
                     className="text-gray-300"
                     style={{ fontSize: "clamp(7px, 0.45vw, 12px)" }}
                   >
-                     {findName("Power B Current") || "Power B Load"}
+                    {findName("Power B Current") || "Power B Load"}
                   </div>
 
                   <div
-                    className="font-semibold text-gray-300 md:text-base lg:text-xl"
+                    className="font-semibold text-gray-300 md:text-base lg:text-lg"
                     // style={{ fontSize: "clamp(16px, 0.7vw, 18px)" }}
                   >
-                   {findValue("Power B Current") == null
+                    {findValue("Power B Current") == null
                       ? "-"
-                      : `${findValue("Power B Current")}A`}
+                      : `${Number(findValue("Power B Current")).toFixed(2)}A`}
                   </div>
 
                   <div
@@ -151,22 +172,22 @@ function RackDashboard() {
                   </div>
 
                   <div
-                    className="font-semibold md:text-base lg:text-xl "
+                    className="font-semibold md:text-base lg:text-lg "
                     // style={{ fontSize: "clamp(16px, 0.7vw, 18px)" }}
                   >
                     {findValue("Power B KW") == null
                       ? "-"
-                      : `${findValue("Power B KW")}KW`}
+                      : `${Number(findValue("Power B KW")).toFixed(2)}KW`}
                   </div>
                 </div>
               </div>
             </div>
-            
+
             {/* front and rear temperature */}
             <div
               className="absolute bg-[#0C0E12] text-white px-1.5 py-1"
               style={{
-                top: "8%",
+                top: "9%",
                 left: "74%",
                 width: "24%",
                 height: "14%",
@@ -187,7 +208,7 @@ function RackDashboard() {
                   >
                     {findValue("Front Temperature") == null
                       ? "-"
-                      : `${findValue("Front Temperature")}°C`}
+                      : `${Math.round(Number(findValue("Front Temperature")))}°C`}
                   </div>
 
                   <div
@@ -203,7 +224,7 @@ function RackDashboard() {
                   >
                     {findValue("Rear Temperature") == null
                       ? "-"
-                      : `${findValue("Rear Temperature")}°C`}
+                      : `${Math.round(Number(findValue("Rear Temperature")))}°C`}
                   </div>
                 </div>
               </div>
@@ -211,11 +232,11 @@ function RackDashboard() {
 
             {/* front door */}
             <div
-              className="absolute bg-[#0C0E12] text-white px-1.5 py-1"
+              className="absolute bg-[#0C0E12] text-white px-1.5 py-1 place-items-center text-center"
               style={{
-                top: "22%",
-                left: "2%",
-                width: "10%",
+                top: "23%",
+                left: "1.5%",
+                width: "11.5%",
                 height: "15%",
               }}
             >
@@ -229,25 +250,31 @@ function RackDashboard() {
                   </div>
 
                   <div
-                    className="font-semibold text-gray-300 md:text-base lg:text-xl"
-                    // style={{ fontSize: "clamp(12px, 0.7vw, 14px)" }}
+                    className={`font-semibold md:text-sm lg:text-[9px]  py-1 px-1 rounded ${
+                      findValue("Front Door") == null
+                        ? "bg-gray-700 text-gray-300"
+                        : findValue("Front Door") === 1
+                          ? "bg-red-500 text-white"
+                          : "bg-emerald-500 text-white"
+                    }`}
                   >
                     {findValue("Front Door") == null
                       ? "-"
-                      : `${findValue("Front Door")}`}
+                      : findValue("Front Door") === 1
+                        ? "OPEN"
+                        : "CLOSE"}
                   </div>
-
                 </div>
               </div>
             </div>
 
-             {/* rear door */}
+            {/* rear door */}
             <div
-              className="absolute bg-[#0C0E12] text-white px-1.5 py-1"
+              className="absolute bg-[#0C0E12] text-white px-1.5 py-1 place-items-center text-center"
               style={{
-                top: "65%",
-                left: "2%",
-                width: "10%",
+                top: "70%",
+                left: "1.5%",
+                width: "11.5%",
                 height: "15%",
               }}
             >
@@ -261,23 +288,29 @@ function RackDashboard() {
                   </div>
 
                   <div
-                    className="font-semibold text-gray-300 md:text-base lg:text-xl"
-                    // style={{ fontSize: "clamp(12px, 0.7vw, 14px)" }}
+                    className={`font-semibold md:text-sm lg:text-[9px]  py-1 px-1 rounded ${
+                      findValue("Rear Door") == null
+                        ? "bg-gray-700 text-gray-300"
+                        : findValue("Rear Door") === 1
+                          ? "bg-red-500 text-white"
+                          : "bg-emerald-500 text-white"
+                    }`}
                   >
                     {findValue("Rear Door") == null
                       ? "-"
-                      : `${findValue("Rear Door")}`}
+                      : findValue("Rear Door") === 1
+                        ? "OPEN"
+                        : "CLOSE"}
                   </div>
-
                 </div>
               </div>
             </div>
 
-             {/* UPS Status */}
+            {/* UPS Status */}
             <div
               className="absolute bg-[#0C0E12] text-white px-1.5 py-1"
               style={{
-                 top: "73%",
+                top: "73%",
                 left: "74%",
                 width: "24%",
                 height: "22%",
@@ -287,18 +320,18 @@ function RackDashboard() {
                 <div className="flex flex-col justify-center items-center leading-none">
                   <div
                     className="text-gray-300"
-                    style={{ fontSize: "clamp(12px, 0.5vw, 14px)"}}
+                    style={{ fontSize: "clamp(12px, 0.5vw, 14px)" }}
                   >
                     {findName("UPS Load")}
                   </div>
 
                   <div
-                    className="font-semibold text-gray-300 md:text-base lg:text-xl"
+                    className="font-semibold text-gray-300 md:text-base lg:text-lg"
                     // style={{ fontSize: "clamp(12px, 0.7vw, 14px)" }}
                   >
                     {findValue("UPS Output Load") == null
                       ? "-"
-                      : `${findValue("UPS Output Load")}%`}
+                      : `${Math.round(Number(findValue("UPS Output Load")))}%`}
                   </div>
 
                   <div
@@ -309,12 +342,12 @@ function RackDashboard() {
                   </div>
 
                   <div
-                    className="font-semibold md:text-base lg:text-xl"
+                    className="font-semibold md:text-base lg:text-lg"
                     // style={{ fontSize: "clamp(12px, 0.7vw, 14px)" }}
                   >
                     {findValue("UPS Battery Health") == null
                       ? "-"
-                      : `${findValue("UPS Battery Health")}%`}
+                      : `${Math.round(Number(findValue("UPS Battery Health")))}%`}
                   </div>
                   <div
                     className="text-gray-300 mt-2"
@@ -324,74 +357,103 @@ function RackDashboard() {
                   </div>
 
                   <div
-                    className="font-semibold md:text-base lg:text-xl"
-                  // style={{ fontSize: "clamp(12px, 0.7vw, 14px)"}}
+                    className="font-semibold md:text-base lg:text-lg"
+                    // style={{ fontSize: "clamp(12px, 0.7vw, 14px)"}}
                   >
                     {findValue("Remaining Time") == null
                       ? "-"
-                      : `${findValue("Remaining Time")}m`}
+                      : `${Math.round(Number(findValue("Remaining Time")))}m`}
                   </div>
                 </div>
               </div>
             </div>
 
-              {/* cooling Status */}
+            {/* cooling Status */}
             <div
               className="absolute bg-[#0C0E12] text-white px-1.5 py-1"
               style={{
-                 top: "23%",
+                top: "26%",
                 left: "74%",
                 width: "24%",
-                height: "25%",
+                height: "43%",
               }}
             >
-              <div className="grid grid-cols-1 gap-1 h-full">
-                <div className="flex flex-col justify-center items-center  leading-none">
-                  <div
-                    className="text-gray-300"
-                    style={{ fontSize: "clamp(12px, 0.5vw, 14px)" }}
-                  >
+              <div className="grid grid-cols-1 gap-x-2 gap-y-1 h-full content-center">
+                {/* Item 1 */}
+                <div className="flex flex-col items-center justify-center text-center border-b border-gray-100 pb-2">
+                  <div className="text-[11px] text-gray-300 leading-tight ">
                     {findName("Cooling Panel")}
                   </div>
 
                   <div
-                    className="font-semibold text-gray-300 md:text-base lg:text-xl"
-                    // style={{ fontSize: "clamp(12px, 0.7vw, 14px)" }}
+                    className={`mt-0.5 min-w-[38px] px-1 py-[2px] text-[7px] font-semibold rounded-full uppercase  ${
+                      findValue("Cooling Panel") == null
+                        ? "bg-gray-700 text-gray-300"
+                        : findValue("Cooling Panel") === 1
+                          ? "bg-emerald-500 text-white"
+                          : "bg-red-500 text-white"
+                    }`}
                   >
                     {findValue("Cooling Panel") == null
                       ? "-"
-                      : `${findValue("Cooling Panel")}`}
+                      : findValue("Cooling Panel") === 1
+                        ? "ON"
+                        : "OFF"}
+                  </div>
+                </div>
+
+                {/* Item 2 */}
+                <div className="flex flex-col items-center justify-center text-center border-b border-gray-100 pb-2">
+                  <div className="text-[11px] text-gray-300 leading-tight">
+                    {findName("Cooling Panel Supply Temperature")}
                   </div>
 
                   <div
-                    className="text-gray-300 mt-2"
-                    style={{ fontSize: "clamp(12px, 0.5vw, 14px)" }}
-                  >
-                    {findName("Evaporator")}
-                  </div>
-
-                  <div
-                    className="font-semibold md:text-base lg:text-xl"
+                    className="font-semibold text-gray-300 md:text-base lg:text-[15px]"
                     // style={{ fontSize: "clamp(12px, 0.7vw, 14px)" }}
                   >
-                    {findValue("Evaporator") == null
+                    {findValue("Cooling Panel Supply Temperature") == null
                       ? "-"
-                      : `${findValue("Evaporator")}`}
+                      : `${Math.round(Number(findValue("Cooling Panel Supply Temperature")))}°C`}
                   </div>
-                  <div
-                    className="text-gray-300 mt-2"
-                    style={{ fontSize: "clamp(12px, 0.5vw, 14px)" }}
-                  >
+                </div>
+
+                {/* Item 3 */}
+                <div className="flex flex-col items-center justify-center text-center border-b border-gray-100 pb-2">
+                  <div className="text-[11px] text-gray-300 leading-tight">
                     {findName("Compressor")}
                   </div>
 
                   <div
-                    className="font-semibold md:text-base lg:text-xl"
-                    // style={{ fontSize: "clamp(12px, 0.7vw, 14px)" }}
+                    className={`mt-0.5 min-w-[38px] px-1 py-[2px] text-[7px] font-semibold rounded-full uppercase ${
+                      findValue("Compressor") == null
+                        ? "bg-gray-700 text-gray-300"
+                        : findValue("Compressor") === 1
+                          ? "bg-emerald-500 text-white"
+                          : "bg-red-500 text-white"
+                    }`}
                   >
                     {findValue("Compressor") == null
                       ? "-"
-                      : `${findValue("Compressor")}`}
+                      : findValue("Compressor") === 1
+                        ? "ON"
+                        : "OFF"}
+                  </div>
+                </div>
+
+                {/* Item 4 */}
+                <div className="flex flex-col items-center justify-center text-center">
+                  <div className="text-[11px] text-gray-300 leading-tight">
+                    {findName("Cooling Panel Return Temperature")}
+                  </div>
+
+                  <div
+                    className="font-semibold text-gray-300 md:text-base lg:text-[15px]"
+                    // style={{ fontSize: "clamp(12px, 0.7vw, 14px)" }}
+                  >
+                    {findValue("Cooling Panel Return Temperature") == null
+                      ? "-"
+                      : `${Math.round(Number(findValue("Cooling Panel Return Temperature")))}°C`}
                   </div>
                 </div>
               </div>
@@ -568,35 +630,41 @@ function RackDashboard() {
                   >
                     {findValue("UPS Output Load") == null
                       ? "-"
-                      : `${findValue("UPS Output Load")}%`}
+                      : `${Math.round(Number(findValue("UPS Output Load")))}%`}
                   </div>
                 </div>
                 <div
                   className={`p-3 rounded-xl border flex flex-col justify-center ${findValue("UPS Battery Health") == null ? "bg-gray-100 border-gray-200 text-gray-400" : "bg-white border-gray-200"}`}
                 >
                   <div className="text-sm font-semibold text-gray-600 uppercase leading-none">
-                    UPS Health
+                    UPS Battry (%)
                   </div>
                   <div
                     className={`text-2xl font-semibold leading-tight mt-2 ${findValue("UPS Battery Health") == null ? "text-gray-400" : "text-emerald-500"}`}
                   >
                     {findValue("UPS Battery Health") == null
                       ? "-"
-                      : `${findValue("UPS Battery Health")}%`}
+                      : `${Math.round(Number(findValue("UPS Battery Health")))}%`}
                   </div>
                 </div>
                 <div
-                  className={`p-3 rounded-xl border flex flex-col justify-center ${findValue("Remaining Time") == null ? "bg-gray-100 border-gray-200 text-gray-400" : "bg-white border-gray-200"}`}
+                  className={`p-3 rounded-xl border flex flex-col justify-center ${findValue("UPS Health Status") == null ? "bg-gray-100 border-gray-200 text-gray-400" : "bg-white border-gray-200"}`}
                 >
                   <div className="text-sm font-semibold text-gray-600 uppercase leading-none">
-                    UPS Runtime
+                    UPS Health Status
                   </div>
                   <div
-                    className={`text-2xl font-semibold leading-tight mt-2 ${findValue("Remaining Time") == null ? "text-gray-400" : ""}`}
+                    className={`text-lg font-semibold leading-tight mt-2 ${
+                      upsHealth == null
+                        ? "text-gray-400"
+                        : status === "Healthy"
+                          ? "text-green-600"
+                          : status === "Alarm"
+                            ? "text-orange-500"
+                            : "text-red-600"
+                    }`}
                   >
-                    {findValue("Remaining Time") == null
-                      ? "-"
-                      : `${findValue("Remaining Time")}m`}
+                    {status}
                   </div>
                 </div>
               </div>
@@ -606,13 +674,13 @@ function RackDashboard() {
 
         {/* COLUMN 3: Electrical, Env, Climate */}
         <div
-          className="flex-1 flex flex-col gap-2 h-full overflow-hidden"
+          className="flex-1 flex flex-col gap-2 min-h-0 overflow-hidden"
           style={{ flex: "1 1 0" }}
         >
           {/* Electrical Metrics */}
           <div
             className="bg-gray-50 p-3 rounded-2xl border border-gray-200 shadow-sm flex-1 flex flex-col min-h-0"
-            style={{ flex: "1 1 0" }}
+            style={{ flex: "1.1 1 0" }}
           >
             <div className="text-lg font-semibold tracking-tight flex items-center gap-2 mb-2 shrink-0">
               <MdBolt className="text-sky-600 text-2xl" /> Electrical Metrics
@@ -643,20 +711,21 @@ function RackDashboard() {
 
           {/* Environmental Sensors */}
           <div
-            className="bg-gray-50 p-3 rounded-2xl border border-gray-200 shadow-sm flex flex-col min-h-0"
-            style={{ flex: "1 1 0" }}
+            className="bg-gray-50 p-2 rounded-2xl border border-gray-200 shadow-sm flex flex-col min-h-0"
+            style={{ flex: "0.65 1 0" }}
           >
-            <div className="flex items-center justify-between mb-2 shrink-0">
-              <div className="text-lg font-semibold tracking-tight flex items-center gap-2">
-                <MdThermostat className="text-sky-600 text-2xl" /> Environmental
-                Sensors
+            <div className="flex items-center justify-between mb-1 shrink-0">
+              <div className="text-base font-semibold tracking-tight flex items-center gap-1.5">
+                <MdThermostat className="text-sky-600 text-xl" />
+                Environmental Sensors
               </div>
+
               <div className="flex items-center gap-1">
-                <MdThermostat className="text-amber-500 text-lg" />
-                <MdWaterDrop className="text-sky-500 text-lg" />
+                <MdThermostat className="text-amber-500 text-base" />
+                <MdWaterDrop className="text-sky-500 text-base" />
               </div>
             </div>
-            <div className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2">
+            <div className="flex-1 grid grid-cols-2 gap-1">
               <EnvSection
                 title="Front"
                 isPrimary
@@ -682,8 +751,8 @@ function RackDashboard() {
 
           {/* Cooling Control */}
           <div
-            className="bg-gray-50 p-3 rounded-2xl border border-gray-200 shadow-sm flex flex-col min-h-0"
-            style={{ flex: "1 1 0" }}
+            className="bg-gray-50 p-3 rounded-2xl border border-gray-200 shadow-sm flex flex-col"
+            style={{ flex: "0.7 1 0" }}
           >
             <div className="text-lg font-semibold tracking-tight flex items-center gap-2 mb-2 shrink-0">
               <MdAcUnit className="text-sky-600 text-2xl" /> Cooling Systems
@@ -721,7 +790,7 @@ const PowerSourceItem = ({ label, value }) => (
         className={`w-8 h-8 rounded-full flex items-center justify-center ${
           value == null
             ? "bg-gray-100 text-gray-400"
-            : value === 1
+            : Number(value) > 0
               ? "bg-emerald-50 text-emerald-600"
               : "bg-red-50 text-red-600"
         }`}
@@ -744,12 +813,12 @@ const PowerSourceItem = ({ label, value }) => (
       className={`${
         value == null
           ? "bg-gray-300 text-gray-600"
-          : value === 1
+          : Number(value) > 0
             ? "bg-emerald-500 text-white"
             : "bg-red-500 text-white"
       } px-2.5 py-0.5 rounded-full text-xs font-bold uppercase shrink-0`}
     >
-      {value == null ? "-" : value === 1 ? "ON" : "OFF"}
+      {value == null ? "-" : Number(value) > 0 ? "ON" : "OFF"}
     </div>
   </div>
 );
@@ -817,45 +886,71 @@ const EnvSection = ({
   humidityStatus,
 }) => (
   <div className="flex flex-col h-full">
-    <div className="text-base font-semibold uppercase tracking-[0.15em] border-l-4 pl-2 mb-1.5 text-sky-600 border-sky-600">
+    <div className="text-sm font-semibold uppercase tracking-[0.12em] border-l-4 pl-2 mb-1 text-sky-600 border-sky-600">
       {title}
     </div>
-    <div className="flex-1 grid grid-cols-2 gap-1.5 ">
+
+    <div className="flex-1 grid grid-cols-2 gap-1">
       <div
-        className={`p-2 rounded-xl border shadow-sm flex flex-col justify-center items-center ${temp == null ? "bg-gray-100 border-gray-200 text-gray-400" : "bg-white border-gray-100"}`}
+        className={`p-1 rounded-lg border shadow-sm flex flex-col justify-center items-center ${
+          temp == null
+            ? "bg-gray-100 border-gray-200 text-gray-400"
+            : "bg-white border-gray-100"
+        }`}
       >
         <MdThermostat
-          className={`text-xl mb-1 ${temp == null ? "text-gray-400" : "text-amber-500"}`}
-        />
-        <div
-          className={`text-sm  font-semibold uppercase mb-1 tracking-wide text-center ${temp == null ? "text-gray-400" : "text-gray-600"}`}
-        >
-          {tempLabel}
-        </div>
-        <div
-          className={`text-xl font-semibold ${temp == null ? "text-gray-400" : ""}`}
-        >
-          {temp == null ? "-" : temp}
-          <span className="text-sm font-semibold text-gray-600 ml-0.5">°C</span>
-        </div>
-      </div>
-      <div
-        className={`p-2 rounded-xl border shadow-sm flex flex-col justify-center items-center ${humidity == null ? "bg-gray-100 border-gray-200 text-gray-400" : "bg-white border-gray-100"}`}
-      >
-        <MdWaterDrop
-          className={`text-2xl mb-1 ${humidity == null ? "text-gray-400" : "text-sky-500"}`}
+          className={`text-lg mb-0.5 ${
+            temp == null ? "text-gray-400" : "text-amber-500"
+          }`}
         />
 
         <div
-          className={`text-sm  font-semibold uppercase mb-1 tracking-wide text-center ${humidity == null ? "text-gray-400" : "text-gray-400"}`}
+          className={`text-[10px] font-semibold uppercase tracking-wide text-center leading-tight ${
+            temp == null ? "text-gray-400" : "text-gray-600"
+          }`}
+        >
+          {tempLabel}
+        </div>
+
+        <div
+          className={`text-lg font-semibold ${
+            temp == null ? "text-gray-400" : ""
+          }`}
+        >
+          {temp == null ? "-" : Math.round(Number(temp))}
+          <span className="text-[10px] font-semibold text-gray-600 ml-0.5">
+            °C
+          </span>
+        </div>
+      </div>
+
+      <div
+        className={`p-1 rounded-lg border shadow-sm flex flex-col justify-center items-center ${
+          humidity == null
+            ? "bg-gray-100 border-gray-200 text-gray-400"
+            : "bg-white border-gray-100"
+        }`}
+      >
+        <MdWaterDrop
+          className={`text-lg mb-0.5 ${
+            humidity == null ? "text-gray-400" : "text-sky-500"
+          }`}
+        />
+
+        <div
+          className={`text-[10px] font-semibold uppercase tracking-wide text-center leading-tight ${
+            humidity == null ? "text-gray-400" : "text-gray-600"
+          }`}
         >
           {humidityLabel}
         </div>
 
         <div
-          className={`text-xl font-semibold ${humidity == null ? "text-gray-400" : ""}`}
+          className={`text-lg font-semibold ${
+            humidity == null ? "text-gray-400" : ""
+          }`}
         >
-          {humidity == null ? "-" : humidity}
+          {humidity == null ? "-" : Math.round(Number(humidity))}
         </div>
       </div>
     </div>
@@ -874,38 +969,36 @@ const ElectricalCard = ({
 }) => (
   // treat missing active as disabled for visuals and accessibility
   <div
-    className={`bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col overflow-hidden h-full ${active == null ? "opacity-60 pointer-events-none" : ""}`}
+    className={`bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col overflow-hidden h-full `}
     aria-disabled={active == null}
     title={active == null ? "Data unavailable" : undefined}
   >
     <div
-      className={`flex items-center justify-between px-3 py-1.5 border-b ${active == null ? "bg-gray-50 border-gray-200" : active === 1 ? "bg-emerald-50 border-emerald-200" : "bg-red-50 border-red-200"}`}
+      className={`flex items-center justify-between px-3 py-1.5 border-b ${active == null ? "bg-gray-50 border-gray-200" : Number(active) > 0 ? "bg-emerald-50 border-emerald-200" : "bg-red-50 border-red-200"}`}
     >
       <div
-        className={`text-sm font-semibold uppercase tracking-[0.15em] ${active == null ? "text-gray-500" : active === 1 ? "text-emerald-600" : "text-red-600"}`}
+        className={`text-xs font-semibold uppercase tracking-[0.15em] ${active == null ? "text-gray-500" : Number(active) > 0 ? "text-emerald-600" : "text-red-600"}`}
       >
         {label}
       </div>
       <MdBolt
-        className={`text-xl ${active == null ? "text-gray-400" : active === 1 ? "text-emerald-500" : "text-red-500"}`}
+        className={`text-xl ${active == null ? "text-gray-600" : Number(active) > 0 ? "text-emerald-500" : "text-red-500"}`}
       />
     </div>
     <div className="flex-1 grid grid-cols-3 divide-x divide-gray-200">
       <div
-        className={`p-1.5 flex flex-col justify-center items-center ${v == null ? "text-gray-400" : ""}`}
+        className={`p-1.5 flex flex-col justify-center items-center ${v == null ? "text-gray-600" : ""}`}
       >
-        <div className="text-sm font-semibold text-gray-600 uppercase mb-1 tracking-wide text-center">
+        <div className="text-[11px] font-semibold text-gray-600 uppercase  tracking-wide text-center">
           {vLabel}
         </div>
-        <div className="text-xl font-semibold tracking-tighter">
-          {v == null ? "-" : v}
-          <span className="text-base font-semibold text-gray-600 ml-0.5">
-            V
-          </span>
+        <div className="text-base font-semibold tracking-tighter">
+          {v == null ? "-" : Number(v).toFixed(2)}
+          <span className="text-xs font-semibold text-gray-600 ml-0.5">V</span>
         </div>
       </div>
       <div
-        className={`p-1.5 flex flex-col justify-center items-center ${a == null ? "text-gray-400" : ""}`}
+        className={`p-1.5 flex flex-col justify-center items-center ${a == null ? "text-gray-600" : ""}`}
       >
         <div className="text-sm font-semibold text-gray-600 uppercase mb-1 tracking-wide text-center">
           {aLabel}
@@ -913,12 +1006,12 @@ const ElectricalCard = ({
         <div
           className={`text-xl font-semibold ${a == null ? "" : "text-sky-600"} tracking-tighter`}
         >
-          {a == null ? "-" : a}
+          {a == null ? "-" : Number(a).toFixed(2)}
           <span className="text-base font-semibold text-sky-400 ml-0.5">A</span>
         </div>
       </div>
       <div
-        className={`p-1.5 flex flex-col justify-center items-center ${kwh == null ? "text-gray-400" : ""}`}
+        className={`p-1.5 flex flex-col justify-center items-center ${kwh == null ? "text-gray-600" : ""}`}
       >
         <div className="text-sm font-semibold text-gray-600 uppercase mb-1 tracking-wide text-center">
           {kwhLabel}
@@ -926,7 +1019,7 @@ const ElectricalCard = ({
         <div
           className={`text-xl font-semibold ${kwh == null ? "" : "text-amber-500"} tracking-tighter`}
         >
-          {kwh == null ? "-" : kwh}
+          {kwh == null ? "-" : Number(kwh).toFixed(2)}
           <span className="text-base font-semibold text-amber-400 ml-0.5">
             KW
           </span>
@@ -943,21 +1036,19 @@ const ClimateCard = ({ icon, label, value }) => {
 
   return (
     <div
-      className={`p-4 rounded-xl border shadow-sm flex flex-col items-center justify-center gap-3 h-full transition-all
+      className={`p-1.5 rounded-xl border shadow-sm flex flex-col items-center justify-center gap-2 h-full transition-all
         ${
           isDisabled
             ? "bg-gray-100 border-gray-200"
             : "bg-white border-emerald-100"
         }`}
     >
-      <div
-        className={`text-3xl ${isOn ? "text-emerald-500" : "text-gray-400"}`}
-      >
+      <div className={`text-xl ${isOn ? "text-emerald-500" : "text-gray-400"}`}>
         {icon}
       </div>
 
       <div
-        className={`text-sm font-semibold uppercase tracking-widest text-center ${
+        className={`text-xs font-semibold uppercase tracking-widest text-center ${
           isDisabled
             ? "text-gray-400"
             : isOn
@@ -969,7 +1060,7 @@ const ClimateCard = ({ icon, label, value }) => {
       </div>
 
       <div
-        className={`px-4 py-1 text-sm font-semibold tracking-[0.1em] rounded-full uppercase text-center ${
+        className={`px-3 py-0.5 text-sm font-semibold tracking-[0.1em] rounded-full uppercase text-center ${
           isDisabled
             ? "bg-gray-300 text-gray-600"
             : isOn
