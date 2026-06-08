@@ -29,6 +29,17 @@ function RackImage({ rackName, data, onClick }) {
     return item ? item.device_name : keyword;
   };
 
+  const upsHealth = findValue("UPS Health Status");
+
+  const status =
+    upsHealth == null
+      ? "-"
+      : Number(upsHealth) === 0
+        ? "Shutdown"
+        : Number(upsHealth) <= 219
+          ? "Alarm"
+          : "Healthy";
+
   return (
     <div className="w-full h-full min-h-0 flex flex-col   gap-2">
       <div className="flex justify-center">
@@ -255,59 +266,64 @@ function RackImage({ rackName, data, onClick }) {
             top: "73%",
             left: "74%",
             width: "24%",
-            height: "22%",
+            height: "23%",
           }}
         >
-          <div className="grid grid-cols-1 gap-1 h-full">
-            <div className="flex flex-col justify-center items-center leading-none">
-              <div
-                className="text-gray-300"
-                style={{ fontSize: "clamp(12px, 0.5vw, 14px)" }}
-              >
-                {findName("UPS Load")}
-              </div>
+         <div className="grid grid-cols-1 gap-1 h-full">
+                <div className="flex flex-col justify-center items-center  leading-none">
+                  <div
+                    className="text-gray-300"
+                    style={{ fontSize: "clamp(12px, 0.5vw, 14px)" }}
+                  >
+                    UPS Load
+                  </div>
 
-              <div
-                className="font-semibold text-gray-300 md:text-base lg:text-lg"
-                // style={{ fontSize: "clamp(12px, 0.7vw, 14px)" }}
-              >
-                {findValue("UPS Output Load") == null
-                  ? "-"
-                  : `${Math.round(Number(findValue("UPS Output Load")))}%`}
-              </div>
+                  <div
+                    className="font-semibold text-gray-300 md:text-base lg:text-lg"
+                    // style={{ fontSize: "clamp(12px, 0.7vw, 14px)" }}
+                  >
+                    {findValue("UPS Output Load") == null
+                      ? "-"
+                      : `${Math.round(Number(findValue("UPS Output Load")))}%`}
+                  </div>
 
-              <div
-                className="text-gray-300 mt-2"
-                style={{ fontSize: "clamp(12px, 0.5vw, 14px)" }}
-              >
-                {findName("UPS Health")}
-              </div>
+                  <div
+                    className="text-gray-300 mt-2"
+                    style={{ fontSize: "clamp(12px, 0.5vw, 14px)" }}
+                  >
+                    UPS Battry (%)
+                  </div>
 
-              <div
-                className="font-semibold md:text-base lg:text-lg"
-                // style={{ fontSize: "clamp(12px, 0.7vw, 14px)" }}
-              >
-                {findValue("UPS Battery Health") == null
-                  ? "-"
-                  : `${Math.round(Number(findValue("UPS Battery Health")))}%`}
-              </div>
-              <div
-                className="text-gray-300 mt-2"
-                style={{ fontSize: "clamp(12px, 0.5vw, 14px)" }}
-              >
-                {findName("UPS Runtime")}
-              </div>
+                  <div
+                    className="font-semibold md:text-base lg:text-lg"
+                    // style={{ fontSize: "clamp(12px, 0.7vw, 14px)" }}
+                  >
+                    {findValue("UPS Battery Health") == null
+                      ? "-"
+                      : `${Math.round(Number(findValue("UPS Battery Health")))}%`}
+                  </div>
+                  <div
+                    className="text-gray-300 mt-2"
+                    style={{ fontSize: "clamp(12px, 0.5vw, 14px)" }}
+                  >
+                    UPS Health Status
+                  </div>
 
-              <div
-                className="font-semibold md:text-base lg:text-lg"
-                // style={{ fontSize: "clamp(12px, 0.7vw, 14px)"}}
-              >
-                {findValue("Remaining Time") == null
-                  ? "-"
-                  : `${Math.round(Number(findValue("Remaining Time")))}m`}
+                  <div
+                    className={`px-2 py-[2px] text-[8px] font-semibold rounded-full uppercase ${
+                      upsHealth == null
+                        ? "bg-gray-700 text-gray-300"
+                        : status === "Healthy"
+                          ? "bg-emerald-500 text-white"
+                          : status === "Alarm"
+                            ? "bg-orange-500 text-white"
+                            : "bg-red-500 text-white"
+                    }`}
+                  >
+                    {status}
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
         </div>
 
         {/* cooling Status */}

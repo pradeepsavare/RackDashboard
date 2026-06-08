@@ -19,7 +19,6 @@ import {
 import { GiRat } from "react-icons/gi";
 
 function RackDashboard({ rackName, data, onBack }) {
- 
   const sourceArray = Array.isArray(data)
     ? data
     : Array.isArray(data?.data)
@@ -313,16 +312,16 @@ function RackDashboard({ rackName, data, onBack }) {
                 top: "73%",
                 left: "74%",
                 width: "24%",
-                height: "22%",
+                height: "26%",
               }}
             >
               <div className="grid grid-cols-1 gap-1 h-full">
-                <div className="flex flex-col justify-center items-center leading-none">
+                <div className="flex flex-col justify-center items-center  leading-none">
                   <div
                     className="text-gray-300"
                     style={{ fontSize: "clamp(12px, 0.5vw, 14px)" }}
                   >
-                    {findName("UPS Load")}
+                    UPS Load
                   </div>
 
                   <div
@@ -338,7 +337,7 @@ function RackDashboard({ rackName, data, onBack }) {
                     className="text-gray-300 mt-2"
                     style={{ fontSize: "clamp(12px, 0.5vw, 14px)" }}
                   >
-                    {findName("UPS Health")}
+                    UPS Battry (%)
                   </div>
 
                   <div
@@ -353,16 +352,21 @@ function RackDashboard({ rackName, data, onBack }) {
                     className="text-gray-300 mt-2"
                     style={{ fontSize: "clamp(12px, 0.5vw, 14px)" }}
                   >
-                    {findName("UPS Runtime")}
+                    UPS Health Status
                   </div>
 
                   <div
-                    className="font-semibold md:text-base lg:text-lg"
-                    // style={{ fontSize: "clamp(12px, 0.7vw, 14px)"}}
+                    className={`px-2 py-[2px] text-[8px] font-semibold rounded-full uppercase ${
+                      upsHealth == null
+                        ? "bg-gray-700 text-gray-300"
+                        : status === "Healthy"
+                          ? "bg-emerald-500 text-white"
+                          : status === "Alarm"
+                            ? "bg-orange-500 text-white"
+                            : "bg-red-500 text-white"
+                    }`}
                   >
-                    {findValue("Remaining Time") == null
-                      ? "-"
-                      : `${Math.round(Number(findValue("Remaining Time")))}m`}
+                    {status}
                   </div>
                 </div>
               </div>
